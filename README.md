@@ -35,17 +35,60 @@ In timing diagram Q0 is changing as soon as the negative edge of clock pulse is 
 
 **PROGRAM**
 ```
-module ex12(out,clk,rst);
-input clk,rst;
-output reg [3:0]out;
-always @ (posedge clk)
-begin
-  if(rst)
-      out<=0;
-   else
-     out<=out-1;
-end
+module exp12(
+    input wire clk,        
+    input wire reset,     
+    output wire [3:0] q    
+);
+
+    wire clk1, clk2, clk3;
+    T_FF tff0 (
+        .clk(clk),
+        .reset(reset),
+        .q(q[0]),
+        .clk_out(clk1)
+    );
+
+    T_FF tff1 (
+        .clk(clk1),
+        .reset(reset),
+        .q(q[1]),
+        .clk_out(clk2)
+    );
+
+    T_FF tff2 (
+        .clk(clk2),
+        .reset(reset),
+        .q(q[2]),
+        .clk_out(clk3)
+    );
+
+    T_FF tff3 (
+        .clk(clk3),
+        .reset(reset),
+        .q(q[3]),
+        .clk_out()
+    );
+
 endmodule
+
+
+module T_FF (
+    input wire clk,
+    input wire reset,
+    output reg q,
+    output wire clk_out
+);
+    assign clk_out = q;  // Output to next stage
+
+    always @(negedge clk or posedge reset) begin
+        if (reset)
+            q <= 0;
+        else
+            q <= ~q;
+    end
+endmodule 
+
 ```
  Developed by:Yaazhini S 
  RegisterNumber:212224230308
@@ -53,13 +96,15 @@ endmodule
 
 **RTL LOGIC FOR 4 Bit Ripple Counter**
 
-![image](https://github.com/user-attachments/assets/0e0783a8-822d-4163-b107-388a7f06405f)
+![image](https://github.com/user-attachments/assets/0284daaa-78a8-4ba0-b495-1f6f29b7e95e)
+
 
 
 
 **TIMING DIGRAMS FOR 4 Bit Ripple Counter**
 
-![image](https://github.com/user-attachments/assets/41cbec9e-a511-4d45-bc6d-47637c33ef85)
+![image](https://github.com/user-attachments/assets/45d7d66b-1bfe-4e21-a2cd-68f530bb3acd)
+
 
 
 
